@@ -1,0 +1,84 @@
+package com.john.coupons.controllers;
+
+import com.john.coupons.dto.Company;
+import com.john.coupons.exceptions.ApplicationException;
+import com.john.coupons.service.CompaniesService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/companies")
+public class CompaniesController {
+
+    private final CompaniesService companiesService;
+
+    @Autowired
+    private CompaniesController(CompaniesService companiesService) {
+        this.companiesService = companiesService;
+    }
+
+    @PostMapping
+    public ResponseEntity<Company> createCompany(@RequestBody Company company) throws ApplicationException {
+        return new ResponseEntity<>(companiesService.createCompany(company), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Company> updateCompany(@PathVariable("id") Long id, @RequestBody Company company) throws ApplicationException {
+        return new ResponseEntity<>(companiesService.updateCompany(id, company), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Company> getCompany(@PathVariable("id") Long id) throws ApplicationException {
+        return new ResponseEntity<>(companiesService.getCompany(id), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCompany(@PathVariable("id") Long id) throws ApplicationException {
+        companiesService.deleteCompany(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Company>> getAllCompanies() throws ApplicationException {
+        return new ResponseEntity<>(companiesService.getAllCompanies(), HttpStatus.OK);
+    }
+
+    @GetMapping("/isCompanyExist/{id}")
+    public ResponseEntity<Boolean> isCompanyExist(@PathVariable("id") Long id) throws ApplicationException {
+        return new ResponseEntity<>(companiesService.existById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/isCompanyNameExist")
+    public ResponseEntity<Boolean> isCompanyNameExist(@RequestParam("companyName") String companyName) throws ApplicationException {
+        return new ResponseEntity<>(companiesService.isCompanyNameExist(companyName), HttpStatus.OK);
+    }
+
+    @GetMapping("/parameterToSortByAscending")
+    public ResponseEntity<List<Company>> findCompaniesWithSortingAsc(@RequestParam("sortAscending") String parameterToSortBy) {
+        return new ResponseEntity<>(companiesService.findCompaniesWithSortingAscending(parameterToSortBy), HttpStatus.OK);
+    }
+
+    @GetMapping("/parameterToSortByDescending")
+    public ResponseEntity<List<Company>> findCompaniesWithSortingDesc(@RequestParam("sortDescending") String parameterToSortBy) {
+        return new ResponseEntity<>(companiesService.findCompaniesWithSortingDescending(parameterToSortBy), HttpStatus.OK);
+    }
+
+    @GetMapping("/pages")
+    public ResponseEntity<List<Company>> findCompaniesWithPagination(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize) {
+        return new ResponseEntity<>(companiesService.findCompaniesWithPagination(offset, pageSize), HttpStatus.OK);
+    }
+
+    @GetMapping("/pageAndSortAscending")
+    public ResponseEntity<List<Company>> getAllCompaniesWithPaginationAndSortingAsc(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize, @RequestParam("parameterToSortBy") String parameterToSortBy) {
+        return new ResponseEntity<>(companiesService.findCompaniesWithPaginationAndSortingAscending(offset, pageSize, parameterToSortBy), HttpStatus.OK);
+    }
+    @GetMapping("/pageAndSortDescending")
+    public ResponseEntity<List<Company>> getAllCompaniesWithPaginationAndSortingDesc(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize, @RequestParam("parameterToSortBy") String parameterToSortBy) {
+        return new ResponseEntity<>(companiesService.findCompaniesWithPaginationAndSortingDescending(offset, pageSize, parameterToSortBy), HttpStatus.OK);
+    }
+}
+
