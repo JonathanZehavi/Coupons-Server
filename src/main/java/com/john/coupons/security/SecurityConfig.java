@@ -45,12 +45,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/users/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/customers").permitAll()
                 .antMatchers(HttpMethod.GET, "/coupons").permitAll()
-                .antMatchers(HttpMethod.GET, "/users").permitAll()
-                .antMatchers(HttpMethod.GET, "/customers").permitAll()
+                .antMatchers(HttpMethod.GET, "/users").hasRole("Admin")
+                .antMatchers(HttpMethod.GET, "/customers").hasAnyRole("Admin")
                 .antMatchers(HttpMethod.PUT, "/customers").permitAll()
-                .antMatchers(HttpMethod.POST, "/coupons").permitAll()
-                .antMatchers("/purchases").permitAll()
-                .antMatchers("/companies").permitAll();
+                .antMatchers(HttpMethod.POST, "/coupons").hasAnyRole("Admin", "Company")
+                .antMatchers(HttpMethod.POST, "/purchases").permitAll()
+                .antMatchers(HttpMethod.POST,"/companies").hasRole("Admin");
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
