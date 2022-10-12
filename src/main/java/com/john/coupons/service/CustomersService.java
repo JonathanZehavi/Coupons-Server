@@ -49,8 +49,9 @@ public class CustomersService {
     @Transactional
     public Customer updateCustomer(Long id, Customer customer) throws ApplicationException {
         customerValidations.validateCustomer(customer);
-        customer = getCustomerById(id);
         CustomerEntity customerEntity = CustomerEntityConverter.from(customer);
+        customerEntity.setId(id);
+        customerEntity.getUser().setId(id);
         customerEntity.getUser().setPassword(passwordEncoder.encode(customer.getUser().getPassword()));
         customerEntity.getUser().setRole(Role.Customer);
         customerEntity = customersRepository.save(customerEntity);

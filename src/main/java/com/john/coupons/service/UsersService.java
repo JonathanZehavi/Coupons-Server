@@ -66,8 +66,9 @@ public class UsersService {
 
     public User updateUser(Long id, User user) throws ApplicationException {
         userValidations.validateUser(user);
-        user = getUser(id);
         UserEntity userEntity = UserEntityConverter.from(user);
+        userEntity.setId(id);
+        userEntity.setPassword(passwordEncoder.encode(user.getPassword()));
         userEntity = userRepository.save(userEntity);
         return UserDtoConverter.from(userEntity);
     }

@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
         customer.setAddress(customerEntity.getAddress());
         customer.setBirthday(customerEntity.getBirthday());
         customer.setPhoneNumber(customerEntity.getPhoneNumber());
+        if (customer.getPurchases() != null){
         customer.setPurchases(customerEntity.getPurchases()
                 .stream()
                 .map(purchaseEntity -> {
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
                     purchase.setCouponId(purchaseEntity.getCoupon().getId());
                     return purchase;
         }).collect(Collectors.toList()));
+        }
         return customer;
     }
 

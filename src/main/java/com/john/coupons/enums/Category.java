@@ -12,5 +12,6 @@ public enum Category {
     Kitchen,
     Maintenance,
     Travel,
+    Entertainment,
 
 }

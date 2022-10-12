@@ -40,22 +40,19 @@ public class CouponsService {
         if (coupon.getStartDate().isBefore(LocalDate.now())) {
             throw new ApplicationException(ErrorType.COUPON_START_DATE_MUST_BE_IN_THE_FUTURE);
         }
+        couponEntity.setCompany(CompanyEntityConverter.from(company));
         couponEntity = couponsRepository.save(couponEntity);
-        if (company != null) {
-            couponEntity.setCompany(CompanyEntityConverter.from(company));
-        }
         return CouponDtoConverter.from(couponEntity);
     }
 
     public Coupon updateCoupon(Long id, Coupon coupon) throws ApplicationException {
         couponValidations.validateCoupon(coupon);
-//        coupon = getCouponById(coupon.getId());
         CouponEntity couponEntity = CouponEntityConverter.from(coupon);
         couponEntity.setId(id);
         couponEntity.setAmount(coupon.getAmount());
-        couponEntity = couponsRepository.save(couponEntity);
         Company company = companiesService.getCompany(coupon.getCompanyId());
         couponEntity.setCompany(CompanyEntityConverter.from(company));
+        couponEntity = couponsRepository.save(couponEntity);
         return CouponDtoConverter.from(couponEntity);
     }
 
