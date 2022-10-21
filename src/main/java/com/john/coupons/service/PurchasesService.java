@@ -1,10 +1,8 @@
 package com.john.coupons.service;
 
 import com.john.coupons.converters.*;
-import com.john.coupons.dto.Coupon;
-import com.john.coupons.dto.Customer;
-import com.john.coupons.dto.Purchase;
-import com.john.coupons.dto.PurchaseDetails;
+import com.john.coupons.dto.*;
+import com.john.coupons.entities.CouponEntity;
 import com.john.coupons.entities.PurchaseEntity;
 import com.john.coupons.enums.ErrorType;
 import com.john.coupons.exceptions.ApplicationException;
@@ -16,6 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,25 +26,38 @@ public class PurchasesService {
     private final PurchaseValidations purchaseValidations;
     private final CouponsService couponsService;
     private final CustomersService customersService;
+    private final CompaniesService companiesService;
+
 
     @Autowired
-    public PurchasesService(PurchasesRepository purchasesRepository, PurchaseValidations purchaseValidations, CouponsService couponsService, CustomersService customersService) {
+    public PurchasesService(PurchasesRepository purchasesRepository, PurchaseValidations purchaseValidations, CouponsService couponsService, CustomersService customersService, CompaniesService companiesService) {
         this.purchasesRepository = purchasesRepository;
         this.purchaseValidations = purchaseValidations;
         this.couponsService = couponsService;
         this.customersService = customersService;
+        this.companiesService = companiesService;
     }
 
     public Purchase createPurchase(Purchase purchase) throws ApplicationException {
-        Coupon coupon = couponsService.getCouponById(purchase.getCouponId());
         Customer customer = customersService.getCustomerById(purchase.getCustomerId());
+        purchase.setAmount(purchase.getCoupons().size());
         purchaseValidations.validatePurchase(purchase);
-        purchase.setTotalPrice(coupon.getPrice() * purchase.getAmount());
         PurchaseEntity purchaseEntity = PurchaseEntityConverter.from(purchase);
-        purchaseEntity.setCoupon(CouponEntityConverter.from(coupon));
-        coupon.setAmount(coupon.getAmount() - purchase.getAmount());
+        List<Coupon> coupons = purchase.getCoupons();
+        HashMap<Long, List<Coupon>> map = new HashMap<>();
+        for (Coupon coupon : coupons) {
+            Company company = companiesService.getCompany(coupon.getCompanyId());
+            CouponEntity couponEntity = CouponEntityConverter.from(coupon);
+            List<Coupon> couponsWithTheSameId = map.computeIfAbsent(coupon.getId(), k -> new ArrayList<Coupon>());
+            couponsWithTheSameId.add(coupon);
+            couponEntity.setCompany(CompanyEntityConverter.from(company));
+            int amount = map.get(coupon.getId()).size();
+            couponEntity.setAmount(coupon.getAmount() - amount);
+            couponsService.updateCoupon(coupon.getId(), CouponDtoConverter.from(couponEntity));
+            purchaseEntity.setCoupons(purchaseEntity.getCoupons().stream().filter(couponToFilter -> couponToFilter.getCompany() != null).collect(Collectors.toList()));
+            purchaseEntity.addCoupon(couponEntity);
+        }
         purchaseEntity.setCustomer(CustomerEntityConverter.from(customer));
-        couponsService.updateCoupon(coupon.getId(), coupon);
         purchaseEntity = purchasesRepository.save(purchaseEntity);
         return PurchaseDtoConverter.from(purchaseEntity);
     }
@@ -52,14 +65,11 @@ public class PurchasesService {
 
     public Purchase updatePurchase(Long id, Purchase purchase) throws ApplicationException {
         purchaseValidations.validatePurchase(purchase);
-        Coupon coupon = couponsService.getCouponById(purchase.getCouponId());
         Customer customer = customersService.getCustomerById(purchase.getId());
         purchase = getPurchaseById(id);
         PurchaseEntity purchaseEntity = PurchaseEntityConverter.from(purchase);
         purchasesRepository.save(purchaseEntity);
-        purchaseEntity.setCoupon(CouponEntityConverter.from(coupon));
         purchaseEntity.setCustomer(CustomerEntityConverter.from(customer));
-        couponsService.updateCoupon(coupon.getId(), coupon);
         return PurchaseDtoConverter.from(purchaseEntity);
     }
 
@@ -81,14 +91,16 @@ public class PurchasesService {
         return purchaseEntities.stream().map(PurchaseDetailsConverter::from).collect(Collectors.toList());
     }
 
-    public List<PurchaseDetails> getPurchasesByCouponId(Long couponId) throws ApplicationException {
-        List<PurchaseEntity> purchaseEntities = purchasesRepository.findAllByCouponId(couponId);
-        return purchaseEntities.stream().map(PurchaseDetailsConverter::from).collect(Collectors.toList());
-    }
 
     public List<PurchaseDetails> getPurchasesDetails() {
         List<PurchaseEntity> purchaseEntities = purchasesRepository.findAll();
         return purchaseEntities.stream().map(PurchaseDetailsConverter::from).collect(Collectors.toList());
+    }
+
+    public PurchaseDetails getPurchasesDetailsById(Long purchaseId) throws ApplicationException {
+        PurchaseEntity purchaseEntities = purchasesRepository.findById(purchaseId).orElseThrow(() ->
+                new ApplicationException(ErrorType.ID_DOES_NOT_EXIST));
+        return PurchaseDetailsConverter.from(purchaseEntities);
     }
 
     public List<Purchase> getAllPurchases() throws ApplicationException {

@@ -1,6 +1,5 @@
 package com.john.coupons.entities;
 
-import com.john.coupons.enums.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,14 +46,13 @@ public class CouponEntity {
     private String image;
 
     @Column(name = "category", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Category category;
+    private String category;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
     private CompanyEntity company;
 
-    @OneToMany(mappedBy = "coupon", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "coupons", cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private List<PurchaseEntity> purchases;
 
 }

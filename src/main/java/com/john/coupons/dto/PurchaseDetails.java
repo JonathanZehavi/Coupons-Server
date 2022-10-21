@@ -4,14 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class PurchaseDetails {
 
+    private Long id;
     private String firstname;
     private String lastname;
     private String username;
@@ -19,9 +20,6 @@ public class PurchaseDetails {
     private String phoneNumber;
     private int amount;
     private LocalDateTime dateOfPurchase;
-    private String title;
-    private String description;
-    private float price;
-    private String companyName;
+    private List<Coupon> coupons;
 
 }

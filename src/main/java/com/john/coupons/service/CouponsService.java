@@ -4,7 +4,6 @@ import com.john.coupons.converters.*;
 import com.john.coupons.dto.Company;
 import com.john.coupons.dto.Coupon;
 import com.john.coupons.entities.CouponEntity;
-import com.john.coupons.enums.Category;
 import com.john.coupons.enums.ErrorType;
 import com.john.coupons.exceptions.ApplicationException;
 import com.john.coupons.repositories.CouponsRepository;
@@ -87,11 +86,11 @@ public class CouponsService {
         return couponEntityList.stream().map(CouponDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Coupon> findByCategory(Category category) throws ApplicationException {
-        if (category == null) {
+    public List<Coupon> findByCategory(String categoryName) throws ApplicationException {
+        if (categoryName == null) {
             throw new ApplicationException(ErrorType.INVALID_CATEGORY);
         }
-        List<CouponEntity> couponEntityList = couponsRepository.getCouponsByCategory(category);
+        List<CouponEntity> couponEntityList = couponsRepository.getCouponsByCategory(categoryName);
         return couponEntityList.stream().map(CouponDtoConverter::from).collect(Collectors.toList());
     }
 

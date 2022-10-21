@@ -22,6 +22,9 @@ public class CouponValidations  {
         if (coupon.getCategory() == null) {
             throw new ApplicationException(ErrorType.INVALID_COUPON_TYPE);
         }
+        if (coupon.getEndDate().isBefore(coupon.getStartDate())) {
+            throw new ApplicationException(ErrorType.START_DATE_MUST_BE_BEFORE_END_DATE);
+        }
 
     }
 }

@@ -1,13 +1,10 @@
 package com.john.coupons.dto;
 
-import com.john.coupons.enums.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Date;
-
 
 @Data
 @NoArgsConstructor
@@ -19,7 +16,7 @@ public class Coupon {
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
-    private Category category;
+    private String category;
     private Long companyId;
     private int amount;
     private float price;

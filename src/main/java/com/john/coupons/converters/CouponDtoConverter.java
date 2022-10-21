@@ -13,12 +13,10 @@ public class CouponDtoConverter {
         coupon.setDescription(couponEntity.getDescription());
         coupon.setTitle(couponEntity.getTitle());
         coupon.setPrice(couponEntity.getPrice());
-        coupon.setCompanyId(couponEntity.getCompany().getId());
         coupon.setStartDate(couponEntity.getStartDate());
-        coupon.setCompanyId(couponEntity.getCompany().getId());
         coupon.setEndDate(couponEntity.getEndDate());
         coupon.setImage(couponEntity.getImage());
-
+        coupon.setCompanyId(couponEntity.getCompany().getId());
         return coupon;
     }
 }

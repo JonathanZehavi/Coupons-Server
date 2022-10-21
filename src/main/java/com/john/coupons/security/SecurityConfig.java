@@ -41,16 +41,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
-                .antMatchers(HttpMethod.PUT, "/users").permitAll()
-                .antMatchers(HttpMethod.POST, "/users/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/coupons").hasAnyRole("Admin", "Company")
+                .antMatchers(HttpMethod.POST, "/purchases").permitAll()
+                .antMatchers(HttpMethod.POST,"/companies").hasRole("Admin")
                 .antMatchers(HttpMethod.POST, "/customers").permitAll()
+                .antMatchers(HttpMethod.PUT, "/users").permitAll()
+                .antMatchers(HttpMethod.PUT, "/customers").permitAll()
+                .antMatchers(HttpMethod.PUT, "/companies").hasAnyRole("Admin", "Company")
+                .antMatchers(HttpMethod.PUT, "/coupons").hasAnyRole("Admin", "Company")
+                .antMatchers(HttpMethod.PUT, "/purchases").hasRole("Admin")
                 .antMatchers(HttpMethod.GET, "/coupons").permitAll()
                 .antMatchers(HttpMethod.GET, "/users").hasRole("Admin")
-                .antMatchers(HttpMethod.GET, "/customers").hasAnyRole("Admin")
-                .antMatchers(HttpMethod.PUT, "/customers").permitAll()
-                .antMatchers(HttpMethod.POST, "/coupons").permitAll() // .hasAnyRole("Admin", "Company")
-                .antMatchers(HttpMethod.POST, "/purchases").permitAll()
-                .antMatchers(HttpMethod.POST,"/companies").permitAll(); //.hasRole("Admin");
+                .antMatchers(HttpMethod.GET, "/purchases").hasRole("Admin")
+                .antMatchers(HttpMethod.GET, "/customers").hasAnyRole("Admin", "Company")
+                .antMatchers(HttpMethod.GET, "/companies").hasAnyRole("Admin")
+                .antMatchers(HttpMethod.DELETE, "/users").hasRole("Admin")
+                .antMatchers(HttpMethod.DELETE, "/purchases").hasRole("Admin")
+                .antMatchers(HttpMethod.DELETE, "/coupons").hasAnyRole("Admin", "Company")
+                .antMatchers(HttpMethod.DELETE, "/companies").hasAnyRole("Admin")
+                .antMatchers(HttpMethod.DELETE, "/customers").hasAnyRole("Admin");
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
@@ -58,8 +67,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public JwtAuthorizationFilter jwtAuthorizationFilter() {
         return new JwtAuthorizationFilter();
     }
-
-
 
     @Override
     @Bean(BeanIds.AUTHENTICATION_MANAGER)

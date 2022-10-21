@@ -5,15 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Company {
+@NoArgsConstructor
+public class Category {
 
     private Long id;
-    private String companyName;
-    private String phoneNumber;
-    private String address;
-
+    private String name;
 
 }
-

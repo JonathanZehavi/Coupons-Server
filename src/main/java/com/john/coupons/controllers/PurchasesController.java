@@ -49,27 +49,16 @@ public class PurchasesController {
         return new ResponseEntity<>(purchasesService.getPurchasesByCustomerId(customerId), HttpStatus.OK);
     }
 
-    @GetMapping("/ByCouponId/{id}")
-    public ResponseEntity<List<PurchaseDetails>> getPurchasesByCouponId(@PathVariable("id") Long couponId) throws ApplicationException {
-        return new ResponseEntity<>(purchasesService.getPurchasesByCouponId(couponId), HttpStatus.OK);
-    }
 
     @GetMapping("/getAllPurchasesDetails")
     public ResponseEntity<List<PurchaseDetails>> getPurchasesDetails() {
         return new ResponseEntity<>(purchasesService.getPurchasesDetails(), HttpStatus.OK);
     }
-//
-//
-//    @GetMapping("/byCouponId/{id}")
-//    public ResponseEntity<List<Purchase>> getPurchasesBuCouponId(@PathVariable("id") Long couponId) throws ApplicationException {
-//        List<PurchaseEntity> purchaseEntityList = purchasesService.getPurchasesByCouponId(couponId);
-//        List<Purchase> purchases = new ArrayList<>();
-//        for (PurchaseEntity purchaseEntity : purchaseEntityList) {
-//            Purchase from = PurchaseDtoConverter.from(purchaseEntity);
-//            purchases.add(from);
-//        }
-//        return new ResponseEntity<>(purchases, HttpStatus.OK);
-//    }
+
+    @GetMapping("/getPurchaseDetails/{id}")
+    public ResponseEntity<PurchaseDetails> getPurchasesDetailsById(@PathVariable("id") Long purchaseId) throws ApplicationException {
+        return new ResponseEntity<>(purchasesService.getPurchasesDetailsById(purchaseId), HttpStatus.OK);
+    }
 
     @GetMapping
     public ResponseEntity<List<Purchase>> getAllPurchases() throws ApplicationException {

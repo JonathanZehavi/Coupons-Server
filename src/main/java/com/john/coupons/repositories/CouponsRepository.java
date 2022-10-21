@@ -1,7 +1,6 @@
 package com.john.coupons.repositories;
 
 import com.john.coupons.entities.CouponEntity;
-import com.john.coupons.enums.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,8 +19,7 @@ public interface CouponsRepository extends JpaRepository<CouponEntity, Long> {
     List<CouponEntity> getAllCoupons();
 
     @Query("select c from CouponEntity c where c.category = ?1")
-    List<CouponEntity> getCouponsByCategory(Category category);
-
+    List<CouponEntity> getCouponsByCategory(String categoryName);
 
     @Query("select c from CouponEntity c where c.price <= ?1")
     List<CouponEntity> findByPriceLessThanEqual(float price);

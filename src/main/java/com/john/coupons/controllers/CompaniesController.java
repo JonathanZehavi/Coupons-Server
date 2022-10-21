@@ -17,7 +17,7 @@ public class CompaniesController {
     private final CompaniesService companiesService;
 
     @Autowired
-    private CompaniesController(CompaniesService companiesService) {
+    CompaniesController(CompaniesService companiesService) {
         this.companiesService = companiesService;
     }
 

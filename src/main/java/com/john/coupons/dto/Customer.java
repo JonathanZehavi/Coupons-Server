@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 
 @Data
@@ -19,5 +18,5 @@ public class Customer {
     private int amountOfChildren;
     private LocalDate birthday;
     private String phoneNumber;
-    List<Purchase> purchases;
+
 }

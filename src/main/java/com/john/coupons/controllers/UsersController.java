@@ -44,7 +44,7 @@ public class UsersController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll() throws ApplicationException {
+    public ResponseEntity<List<User>> getAllUsers() throws ApplicationException {
         return new ResponseEntity<>(usersService.getAllUsers(), HttpStatus.OK);
     }
 

@@ -1,7 +1,6 @@
 package com.john.coupons.controllers;
 
 import com.john.coupons.dto.Coupon;
-import com.john.coupons.enums.Category;
 import com.john.coupons.service.CouponsService;
 import com.john.coupons.exceptions.ApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class CouponsController {
     private final CouponsService couponsService;
 
     @Autowired
-    private CouponsController(CouponsService couponsService) {
+    CouponsController(CouponsService couponsService) {
         this.couponsService = couponsService;
     }
 
@@ -49,8 +48,8 @@ public class CouponsController {
     }
 
     @GetMapping("/byCategory")
-    public ResponseEntity<List<Coupon>> getCouponByCategory(@RequestParam("category") Category category) throws ApplicationException {
-        return new ResponseEntity<>(couponsService.findByCategory(category), HttpStatus.OK);
+    public ResponseEntity<List<Coupon>> getCouponByCategory(@RequestParam("categoryName") String categoryName) throws ApplicationException {
+        return new ResponseEntity<>(couponsService.findByCategory(categoryName), HttpStatus.OK);
     }
 
     @GetMapping("/byCompanyId/{companyId}")

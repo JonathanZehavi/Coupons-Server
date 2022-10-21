@@ -8,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,8 +36,16 @@ public class PurchaseEntity {
     @ManyToOne
     private CustomerEntity customer;
 
-    @ManyToOne
-    private CouponEntity coupon;
+    @ManyToMany
+    @JoinTable(name = "purchased_coupons",
+            joinColumns = @JoinColumn(name = "purchase_id"),
+            inverseJoinColumns = @JoinColumn(name = "coupon_id"))
+    private List<CouponEntity> coupons = new ArrayList<>();
+
+    public void addCoupon(CouponEntity couponEntity) {
+        coupons.add(couponEntity);
+    }
+
 
 }
 
