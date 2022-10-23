@@ -1,6 +1,7 @@
 package com.john.coupons.service;
 
 import com.john.coupons.converters.*;
+import com.john.coupons.dto.Category;
 import com.john.coupons.dto.Company;
 import com.john.coupons.dto.Coupon;
 import com.john.coupons.entities.CouponEntity;
@@ -24,22 +25,36 @@ public class CouponsService {
     private final CouponsRepository couponsRepository;
     private final CompaniesService companiesService;
     private final CouponValidations couponValidations;
+    private final CategoriesService categoriesService;
+
 
     @Autowired
-    public CouponsService(CouponsRepository couponsRepository, CompaniesService companiesService, CouponValidations couponValidations) {
+    public CouponsService(CouponsRepository couponsRepository, CompaniesService companiesService, CouponValidations couponValidations, CategoriesService categoriesService) {
         this.couponsRepository = couponsRepository;
         this.companiesService = companiesService;
         this.couponValidations = couponValidations;
+        this.categoriesService = categoriesService;
     }
 
     public Coupon createCoupon(Coupon coupon) throws ApplicationException {
         Company company = companiesService.getCompany(coupon.getCompanyId());
+
         couponValidations.validateCoupon(coupon);
         CouponEntity couponEntity = CouponEntityConverter.from(coupon);
         if (coupon.getStartDate().isBefore(LocalDate.now())) {
             throw new ApplicationException(ErrorType.COUPON_START_DATE_MUST_BE_IN_THE_FUTURE);
         }
         couponEntity.setCompany(CompanyEntityConverter.from(company));
+
+        if (categoriesService.isCategoryExistByName(coupon.getCategory())) {
+            Category category = categoriesService.getCategoryByName(coupon.getCategory());
+            couponEntity.setCategory(category.getName());
+        } else {
+            Category category = new Category();
+            category.setName(coupon.getCategory());
+            categoriesService.createCategory(category);
+            couponEntity.setCategory(category.getName());
+        }
         couponEntity = couponsRepository.save(couponEntity);
         return CouponDtoConverter.from(couponEntity);
     }
@@ -51,6 +66,15 @@ public class CouponsService {
         couponEntity.setAmount(coupon.getAmount());
         Company company = companiesService.getCompany(coupon.getCompanyId());
         couponEntity.setCompany(CompanyEntityConverter.from(company));
+        if (categoriesService.isCategoryExistByName(coupon.getCategory())) {
+            Category category = categoriesService.getCategoryByName(coupon.getCategory());
+            couponEntity.setCategory(category.getName());
+        } else {
+            Category category = new Category();
+            category.setName(coupon.getCategory());
+            categoriesService.createCategory(category);
+            couponEntity.setCategory(category.getName());
+        }
         couponEntity = couponsRepository.save(couponEntity);
         return CouponDtoConverter.from(couponEntity);
     }
