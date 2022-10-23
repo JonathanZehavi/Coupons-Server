@@ -86,11 +86,11 @@ public class CouponsService {
         return couponEntityList.stream().map(CouponDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Coupon> findByCategory(String categoryName) throws ApplicationException {
-        if (categoryName == null) {
+    public List<Coupon> findByCategory(String category) throws ApplicationException {
+        if (category == null) {
             throw new ApplicationException(ErrorType.INVALID_CATEGORY);
         }
-        List<CouponEntity> couponEntityList = couponsRepository.getCouponsByCategory(categoryName);
+        List<CouponEntity> couponEntityList = couponsRepository.getCouponsByCategory(category);
         return couponEntityList.stream().map(CouponDtoConverter::from).collect(Collectors.toList());
     }
 

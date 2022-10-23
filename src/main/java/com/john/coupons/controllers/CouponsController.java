@@ -48,8 +48,8 @@ public class CouponsController {
     }
 
     @GetMapping("/byCategory")
-    public ResponseEntity<List<Coupon>> getCouponByCategory(@RequestParam("categoryName") String categoryName) throws ApplicationException {
-        return new ResponseEntity<>(couponsService.findByCategory(categoryName), HttpStatus.OK);
+    public ResponseEntity<List<Coupon>> getCouponByCategory(@RequestParam("category") String category) throws ApplicationException {
+        return new ResponseEntity<>(couponsService.findByCategory(category), HttpStatus.OK);
     }
 
     @GetMapping("/byCompanyId/{companyId}")

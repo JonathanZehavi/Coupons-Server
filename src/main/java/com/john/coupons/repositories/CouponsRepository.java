@@ -19,7 +19,7 @@ public interface CouponsRepository extends JpaRepository<CouponEntity, Long> {
     List<CouponEntity> getAllCoupons();
 
     @Query("select c from CouponEntity c where c.category = ?1")
-    List<CouponEntity> getCouponsByCategory(String categoryName);
+    List<CouponEntity> getCouponsByCategory(@Param("category") String category);
 
     @Query("select c from CouponEntity c where c.price <= ?1")
     List<CouponEntity> findByPriceLessThanEqual(float price);
