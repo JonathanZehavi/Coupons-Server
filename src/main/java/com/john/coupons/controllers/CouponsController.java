@@ -57,22 +57,27 @@ public class CouponsController {
         return new ResponseEntity<>(couponsService.getCouponsByCompanyId(companyId), HttpStatus.OK);
     }
 
+    @GetMapping("/findByMaxPrice/{price}")
+    public ResponseEntity<List<Coupon>> getCouponByMaxPrice(@PathVariable("price") float price) throws ApplicationException {
+        return new ResponseEntity<>(couponsService.getCouponsByMaxPrice(price), HttpStatus.OK);
+    }
+
     @GetMapping("/isCouponExist/{id}")
     public ResponseEntity<Boolean> isCouponExist(@PathVariable("id") Long id) throws ApplicationException {
         return new ResponseEntity<>(couponsService.existById(id), HttpStatus.OK);
     }
 
     @GetMapping("/parameterToSortByAscending")
-    public ResponseEntity<List<Coupon>> findCouponsWithSortingAsc(@RequestParam("sortAscending") String parameterToSortBy) {
+    public ResponseEntity<List<Coupon>> findCouponsWithSortingAsc(@RequestParam("sortAscending") String parameterToSortBy) throws ApplicationException {
         return new ResponseEntity<>(couponsService.findCouponsWithSortingAscending(parameterToSortBy), HttpStatus.OK);
     }
     @GetMapping("/parameterToSortByDescending")
-    public ResponseEntity<List<Coupon>> findCouponsWithSortingDesc(@RequestParam("sortDescending") String parameterToSortBy) {
+    public ResponseEntity<List<Coupon>> findCouponsWithSortingDesc(@RequestParam("sortDescending") String parameterToSortBy)throws ApplicationException {
         return new ResponseEntity<>(couponsService.findCouponsWithSortingDescending(parameterToSortBy), HttpStatus.OK);
     }
 
-    @GetMapping("/pages")
-        public ResponseEntity<List<Coupon>> findCouponsWithPagination(@RequestParam("pageNumber") int offset, @RequestParam("pageSize") int pageSize) throws ApplicationException {
+    @GetMapping("/pages/{pageNumber}/{pageSize}")
+        public ResponseEntity<List<Coupon>> findCouponsWithPagination(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize) throws ApplicationException {
         return new ResponseEntity<>(couponsService.findCouponsWithPagination(offset, pageSize), HttpStatus.OK);
     }
 
@@ -81,8 +86,8 @@ public class CouponsController {
         return new ResponseEntity<>(couponsService.findCouponsWithPaginationAndSortingAscending(offset, pageSize, parameterToSortBy), HttpStatus.OK);
     }
 
-    @GetMapping("/pageAndSortDescending")
-    public ResponseEntity<List<Coupon>> getAllCouponsWithPaginationAndSortingDesc(@RequestParam("pageNumber") int offset, @RequestParam("pageSize") int pageSize, @RequestParam("sortDescending") String parameterToSortBy) throws ApplicationException {
+    @GetMapping("/pageAndSortDescending/{pageNumber}/{pageSize}")
+    public ResponseEntity<List<Coupon>> getAllCouponsWithPaginationAndSortingDesc(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize, @RequestParam("sortDescending") String parameterToSortBy) throws ApplicationException {
         return new ResponseEntity<>(couponsService.findCouponsWithPaginationAndSortingDescending(offset, pageSize, parameterToSortBy), HttpStatus.OK);
     }
 }
