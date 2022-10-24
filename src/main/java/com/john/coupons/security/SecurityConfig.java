@@ -1,8 +1,6 @@
 package com.john.coupons.security;
 
 import com.john.coupons.dto.UserLoginDetails;
-import com.john.coupons.enums.Role;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,10 +49,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/coupons").hasAnyRole("Admin", "Company")
                 .antMatchers(HttpMethod.PUT, "/purchases").hasRole("Admin")
                 .antMatchers(HttpMethod.GET, "/coupons").permitAll()
-                .antMatchers(HttpMethod.GET, "/users").hasRole("Admin")
+                .antMatchers(HttpMethod.GET, "/users").permitAll()//.hasRole("Admin")
+                .antMatchers(HttpMethod.GET, "/users/**").permitAll()//.hasRole("Admin")
                 .antMatchers(HttpMethod.GET, "/purchases").hasRole("Admin")
+                .antMatchers(HttpMethod.GET, "/purchases/**").hasRole("Admin")
                 .antMatchers(HttpMethod.GET, "/customers").hasAnyRole("Admin", "Company")
-                .antMatchers(HttpMethod.GET, "/companies").hasAnyRole("Admin")
+                .antMatchers(HttpMethod.GET, "/customers/**").hasAnyRole("Admin", "Company")
+                .antMatchers(HttpMethod.GET, "/companies").permitAll()//.hasAnyRole("Admin")
+                .antMatchers(HttpMethod.GET, "/companies/**").permitAll()//.hasAnyRole("Admin")
                 .antMatchers(HttpMethod.DELETE, "/users").hasRole("Admin")
                 .antMatchers(HttpMethod.DELETE, "/purchases").hasRole("Admin")
                 .antMatchers(HttpMethod.DELETE, "/coupons").hasAnyRole("Admin", "Company")

@@ -2,7 +2,6 @@ package com.john.coupons.controllers;
 
 import com.john.coupons.dto.Purchase;
 import com.john.coupons.dto.PurchaseDetails;
-import com.john.coupons.entities.PurchaseEntity;
 import com.john.coupons.exceptions.ApplicationException;
 import com.john.coupons.service.PurchasesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +50,7 @@ public class PurchasesController {
 
 
     @GetMapping("/getAllPurchasesDetails")
-    public ResponseEntity<List<PurchaseDetails>> getPurchasesDetails() {
+    public ResponseEntity<List<PurchaseDetails>> getPurchasesDetails() throws ApplicationException {
         return new ResponseEntity<>(purchasesService.getPurchasesDetails(), HttpStatus.OK);
     }
 
@@ -71,26 +70,27 @@ public class PurchasesController {
     }
 
     @GetMapping("/parameterToSortByAscending")
-    public ResponseEntity<List<Purchase>> findPurchasesWithSortingAsc(@RequestParam("sortAscending") String parameterToSortBy) {
-         return new ResponseEntity<>(purchasesService.findPurchasesWithSortingAscending(parameterToSortBy), HttpStatus.OK);
+    public ResponseEntity<List<Purchase>> findPurchasesWithSortingAsc(@RequestParam("sortAscending") String parameterToSortBy) throws ApplicationException {
+        return new ResponseEntity<>(purchasesService.findPurchasesWithSortingAscending(parameterToSortBy), HttpStatus.OK);
     }
+
     @GetMapping("/parameterToSortByDescending")
-    public ResponseEntity<List<Purchase>> findPurchasesWithSortingDesc(@RequestParam("sortDescending") String parameterToSortBy) {
+    public ResponseEntity<List<Purchase>> findPurchasesWithSortingDesc(@RequestParam("sortDescending") String parameterToSortBy) throws ApplicationException {
         return new ResponseEntity<>(purchasesService.findPurchasesWithSortingDescending(parameterToSortBy), HttpStatus.OK);
     }
 
-    @GetMapping("/pages")
-    public ResponseEntity<List<Purchase>> findPurchasesWithPagination(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize) {
+    @GetMapping("/pages/{pageNumber}/{pageSize}")
+    public ResponseEntity<List<Purchase>> findPurchasesWithPagination(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize) throws ApplicationException {
         return new ResponseEntity<>(purchasesService.findPurchasesWithPagination(offset, pageSize), HttpStatus.OK);
     }
 
-    @GetMapping("/pageAndSortAscending")
-    public ResponseEntity<List<Purchase>> getAllPurchasesWithPaginationAndSortingAsc(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize, @RequestParam("parameterToSortBy") String parameterToSortBy) {
+    @GetMapping("/pageAndSortAscending{pageNumber}/{pageSize}")
+    public ResponseEntity<List<Purchase>> getAllPurchasesWithPaginationAndSortingAsc(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize, @RequestParam("parameterToSortBy") String parameterToSortBy) throws ApplicationException {
         return new ResponseEntity<>(purchasesService.findPurchasesWithPaginationAndSortingAscending(offset, pageSize, parameterToSortBy), HttpStatus.OK);
     }
 
-    @GetMapping("/pageAndSortDescending")
-    public ResponseEntity<List<Purchase>> getAllPurchasesWithPaginationAndSortingDESC(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize, @RequestParam("parameterToSortBy") String parameterToSortBy) {
+    @GetMapping("/pageAndSortDescending{pageNumber}/{pageSize}")
+    public ResponseEntity<List<Purchase>> getAllPurchasesWithPaginationAndSortingDESC(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize, @RequestParam("parameterToSortBy") String parameterToSortBy) throws ApplicationException {
         return new ResponseEntity<>(purchasesService.findPurchasesWithPaginationAndSortingDescending(offset, pageSize, parameterToSortBy), HttpStatus.OK);
     }
 

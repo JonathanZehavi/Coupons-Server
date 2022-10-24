@@ -38,7 +38,8 @@ package com.john.coupons.enums;
         CATEGORY_ALREADY_EXIST(634, "Category already exist"),
         EMPTY_COUPONS_LIST(635, "Couldn't find any coupons"),
         EMPTY_COMPANY_LIST(636, "Couldn't find any companies"),
-        START_DATE_MUST_BE_BEFORE_END_DATE(637, "Coupons 'Start Date' must be before 'End Date'");
+        START_DATE_MUST_BE_BEFORE_END_DATE(637, "Coupons 'Start Date' must be before 'End Date'"),
+        EMPTY_LIST(638,"The list you are trying to get is empty");
 
 
 

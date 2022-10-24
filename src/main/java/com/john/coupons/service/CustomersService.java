@@ -24,14 +24,12 @@ import java.util.stream.Collectors;
 public class CustomersService {
 
     private final CustomersRepository customersRepository;
-    private final UsersService usersService;
     private final CustomerValidations customerValidations;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public CustomersService(CustomersRepository customersRepository, UsersService usersService, CustomerValidations customerValidations, PasswordEncoder passwordEncoder) {
+    public CustomersService(CustomersRepository customersRepository, CustomerValidations customerValidations, PasswordEncoder passwordEncoder) {
         this.customersRepository = customersRepository;
-        this.usersService = usersService;
         this.customerValidations = customerValidations;
         this.passwordEncoder = passwordEncoder;
     }
@@ -65,6 +63,9 @@ public class CustomersService {
     }
 
     public void deleteCustomer(Long id) throws ApplicationException {
+        if (id == null){
+            throw new ApplicationException(ErrorType.INVALID_ID);
+        }
         customersRepository.deleteById(id);
     }
 
@@ -76,28 +77,43 @@ public class CustomersService {
         return customersList.stream().map(CustomerDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Customer> findCustomersWithSortingAscending(String parameterToSortBy) {
+    public List<Customer> findCustomersWithSortingAscending(String parameterToSortBy) throws ApplicationException {
         List<CustomerEntity> customerEntityList = customersRepository.findAll(Sort.by(Sort.Direction.ASC, parameterToSortBy));
+        if (customerEntityList.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return customerEntityList.stream().map(CustomerDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Customer> findCustomersWithSortingDescending(String parameterToSortBy) {
+    public List<Customer> findCustomersWithSortingDescending(String parameterToSortBy) throws ApplicationException {
         List<CustomerEntity> customerEntityList = customersRepository.findAll(Sort.by(Sort.Direction.DESC, parameterToSortBy));
+        if (customerEntityList.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return customerEntityList.stream().map(CustomerDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Customer> findCustomersWithPagination(int offset, int pageSize) {
+    public List<Customer> findCustomersWithPagination(int offset, int pageSize) throws ApplicationException {
         Page<CustomerEntity> customerEntityPage = customersRepository.findAll(PageRequest.of(offset, pageSize));
+        if (customerEntityPage.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return customerEntityPage.stream().map(CustomerDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Customer> findCustomersWithPaginationAndSortingAscending(int offset, int pageSize, String parameterToSortBy) {
+    public List<Customer> findCustomersWithPaginationAndSortingAscending(int offset, int pageSize, String parameterToSortBy) throws ApplicationException {
         Page<CustomerEntity> customerEntityPage = customersRepository.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.ASC, parameterToSortBy)));
+        if (customerEntityPage.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return customerEntityPage.stream().map(CustomerDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Customer> findCustomersWithPaginationAndSortingDescending(int offset, int pageSize, String parameterToSortBy) {
+    public List<Customer> findCustomersWithPaginationAndSortingDescending(int offset, int pageSize, String parameterToSortBy) throws ApplicationException {
         Page<CustomerEntity> customerEntityPage = customersRepository.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.DESC, parameterToSortBy)));
+        if (customerEntityPage.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return customerEntityPage.stream().map(CustomerDtoConverter::from).collect(Collectors.toList());
     }
 

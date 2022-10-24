@@ -49,26 +49,26 @@ public class CustomersController {
 
 
     @GetMapping("/parameterToSortByAscending")
-    public ResponseEntity<List<Customer>> findCustomersWithSortingAsc(@RequestParam("sortAscending") String parameterToSortBy) {
+    public ResponseEntity<List<Customer>> findCustomersWithSortingAsc(@RequestParam("sortAscending") String parameterToSortBy) throws ApplicationException {
         return new ResponseEntity<>(customersService.findCustomersWithSortingAscending(parameterToSortBy), HttpStatus.OK);
     }
 
     @GetMapping("/parameterToSortByDescending")
-    public ResponseEntity<List<Customer>> findCustomersWithSortingDesc(@RequestParam("sortDescending") String parameterToSortBy) {
+    public ResponseEntity<List<Customer>> findCustomersWithSortingDesc(@RequestParam("sortDescending") String parameterToSortBy) throws ApplicationException {
         return new ResponseEntity<>(customersService.findCustomersWithSortingDescending(parameterToSortBy), HttpStatus.OK);
     }
 
-    @GetMapping("/pages")
-    public ResponseEntity<List<Customer>> findCustomersWithPagination(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize) {
+    @GetMapping("/pages/{pageNumber}/{pageSize}")
+    public ResponseEntity<List<Customer>> findCustomersWithPagination(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize) throws ApplicationException {
         return new ResponseEntity<>(customersService.findCustomersWithPagination(offset, pageSize), HttpStatus.OK);
     }
 
-    @GetMapping("/pageAndSortAscending")
-    public ResponseEntity<List<Customer>> getAllCustomersWithPaginationAndSortingAsc(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize, @RequestParam("parameterToSortBy") String parameterToSortBy) {
+    @GetMapping("/pageAndSortAscending/{pageNumber}/{pageSize}")
+    public ResponseEntity<List<Customer>> getAllCustomersWithPaginationAndSortingAsc(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize, @RequestParam("parameterToSortBy") String parameterToSortBy) throws ApplicationException {
         return new ResponseEntity<>(customersService.findCustomersWithPaginationAndSortingAscending(offset, pageSize, parameterToSortBy), HttpStatus.OK);
     }
-    @GetMapping("/pageAndSortDescending")
-    public ResponseEntity<List<Customer>> getAllCustomersWithPaginationAndSortingDesc(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize, @RequestParam("parameterToSortBy") String parameterToSortBy) {
+    @GetMapping("/pageAndSortDescending/{pageNumber}/{pageSize}")
+    public ResponseEntity<List<Customer>> getAllCustomersWithPaginationAndSortingDesc(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize, @RequestParam("parameterToSortBy") String parameterToSortBy) throws ApplicationException {
         return new ResponseEntity<>(customersService.findCustomersWithPaginationAndSortingDescending(offset, pageSize, parameterToSortBy), HttpStatus.OK);
     }
 

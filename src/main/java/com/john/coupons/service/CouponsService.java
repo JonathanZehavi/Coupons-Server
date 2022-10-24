@@ -38,7 +38,6 @@ public class CouponsService {
 
     public Coupon createCoupon(Coupon coupon) throws ApplicationException {
         Company company = companiesService.getCompany(coupon.getCompanyId());
-
         couponValidations.validateCoupon(coupon);
         CouponEntity couponEntity = CouponEntityConverter.from(coupon);
         if (coupon.getStartDate().isBefore(LocalDate.now())) {
@@ -99,6 +98,9 @@ public class CouponsService {
 
     public List<Coupon> getAllCoupons() throws ApplicationException {
         List<CouponEntity> couponEntityList = couponsRepository.getAllCoupons();
+        if (couponEntityList.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_COUPONS_LIST);
+        }
         return couponEntityList.stream().map(CouponDtoConverter::from).collect(Collectors.toList());
     }
 
@@ -118,7 +120,10 @@ public class CouponsService {
         return couponEntityList.stream().map(CouponDtoConverter::from).collect(Collectors.toList());
     }
 
-    public Boolean existById(Long id) {
+    public Boolean existById(Long id) throws ApplicationException {
+        if (id == null){
+            throw new ApplicationException(ErrorType.INVALID_ID);
+        }
         return couponsRepository.existsById(id);
     }
 
@@ -130,28 +135,43 @@ public class CouponsService {
         return couponsList.stream().map(CouponDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Coupon> findCouponsWithSortingAscending(String parameterToSortBy) {
+    public List<Coupon> findCouponsWithSortingAscending(String parameterToSortBy) throws ApplicationException {
         List<CouponEntity> couponsEntity = couponsRepository.findAll(Sort.by(Sort.Direction.ASC, parameterToSortBy));
+        if (couponsEntity.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return couponsEntity.stream().map(CouponDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Coupon> findCouponsWithSortingDescending(String parameterToSortBy) {
+    public List<Coupon> findCouponsWithSortingDescending(String parameterToSortBy) throws ApplicationException {
         List<CouponEntity> couponEntityList = couponsRepository.findAll(Sort.by(Sort.Direction.DESC, parameterToSortBy));
+        if (couponEntityList.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return couponEntityList.stream().map(CouponDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Coupon> findCouponsWithPagination(int offset, int pageSize) {
+    public List<Coupon> findCouponsWithPagination(int offset, int pageSize) throws ApplicationException {
         Page<CouponEntity> couponsPagination = couponsRepository.findAll(PageRequest.of(offset, pageSize));
+        if (couponsPagination.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return couponsPagination.stream().map(CouponDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Coupon> findCouponsWithPaginationAndSortingAscending(int offset, int pageSize, String parameterToSortBy) {
+    public List<Coupon> findCouponsWithPaginationAndSortingAscending(int offset, int pageSize, String parameterToSortBy) throws ApplicationException {
         Page<CouponEntity> coupons = couponsRepository.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.ASC, parameterToSortBy)));
+        if (coupons.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return coupons.stream().map(CouponDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Coupon> findCouponsWithPaginationAndSortingDescending(int offset, int pageSize, String parameterToSortBy) {
+    public List<Coupon> findCouponsWithPaginationAndSortingDescending(int offset, int pageSize, String parameterToSortBy) throws ApplicationException {
         Page<CouponEntity> coupons = couponsRepository.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.DESC, parameterToSortBy)));
+        if (coupons.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return coupons.stream().map(CouponDtoConverter::from).collect(Collectors.toList());
     }
 }

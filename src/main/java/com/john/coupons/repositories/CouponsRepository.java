@@ -24,7 +24,6 @@ public interface CouponsRepository extends JpaRepository<CouponEntity, Long> {
     @Query("select c from CouponEntity c where c.price <= ?1")
     List<CouponEntity> findByPriceLessThanEqual(float price);
 
-
     @Modifying
     @Query("select c from CouponEntity c where c.endDate < now()")
     List<CouponEntity> findAllByEndDateBefore();

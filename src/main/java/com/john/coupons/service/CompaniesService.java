@@ -54,6 +54,9 @@ public class CompaniesService {
 
 
     public void deleteCompany(Long id) throws ApplicationException {
+        if (id == null){
+            throw new ApplicationException(ErrorType.INVALID_ID);
+        }
         companiesRepository.deleteById(id);
     }
 
@@ -79,28 +82,43 @@ public class CompaniesService {
         return companiesRepository.existByName(companyName);
     }
 
-    public List<Company> findCompaniesWithSortingAscending(String parameterToSortBy) {
+    public List<Company> findCompaniesWithSortingAscending(String parameterToSortBy) throws ApplicationException {
         List<CompanyEntity> companyEntityList = companiesRepository.findAll(Sort.by(Sort.Direction.ASC, parameterToSortBy));
+        if (companyEntityList.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return companyEntityList.stream().map(CompanyDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Company> findCompaniesWithSortingDescending(String parameterToSortBy) {
+    public List<Company> findCompaniesWithSortingDescending(String parameterToSortBy) throws ApplicationException {
         List<CompanyEntity> companyEntityList = companiesRepository.findAll(Sort.by(Sort.Direction.DESC, parameterToSortBy));
+        if (companyEntityList.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return companyEntityList.stream().map(CompanyDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Company> findCompaniesWithPagination(int offset, int pageSize) {
+    public List<Company> findCompaniesWithPagination(int offset, int pageSize) throws ApplicationException {
         Page<CompanyEntity> companiesPagination = companiesRepository.findAll(PageRequest.of(offset, pageSize));
+        if (companiesPagination.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return companiesPagination.stream().map(CompanyDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Company> findCompaniesWithPaginationAndSortingAscending(int offset, int pageSize, String parameterToSortBy) {
+    public List<Company> findCompaniesWithPaginationAndSortingAscending(int offset, int pageSize, String parameterToSortBy) throws ApplicationException {
         Page<CompanyEntity> companies = companiesRepository.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.ASC, parameterToSortBy)));
+        if (companies.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return companies.stream().map(CompanyDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<Company> findCompaniesWithPaginationAndSortingDescending(int offset, int pageSize, String parameterToSortBy) {
+    public List<Company> findCompaniesWithPaginationAndSortingDescending(int offset, int pageSize, String parameterToSortBy) throws ApplicationException {
         Page<CompanyEntity> companies = companiesRepository.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.DESC, parameterToSortBy)));
+        if (companies.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return companies.stream().map(CompanyDtoConverter::from).collect(Collectors.toList());
     }
 

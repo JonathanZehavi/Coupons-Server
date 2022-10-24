@@ -49,7 +49,7 @@ public class UsersController {
     }
 
     @GetMapping("/isExistByUsername")
-    public ResponseEntity<Boolean> isExistByUsername(@RequestParam("username") String username) {
+    public ResponseEntity<Boolean> isExistByUsername(@RequestParam("username") String username) throws ApplicationException {
         return new ResponseEntity<>(usersService.isExistByUsername(username), HttpStatus.OK);
     }
 
@@ -70,26 +70,26 @@ public class UsersController {
     }
 
     @GetMapping("/parameterToSortByAscending")
-    public ResponseEntity<List<User>> findUsersWithSortingAsc(@RequestParam("sortAscending") String parameterToSortBy) {
+    public ResponseEntity<List<User>> findUsersWithSortingAsc(@RequestParam("sortAscending") String parameterToSortBy) throws ApplicationException {
         return new ResponseEntity<>(usersService.findUsersWithSortingAscending(parameterToSortBy), HttpStatus.OK);
     }
 
     @GetMapping("/parameterToSortByDescending")
-    public ResponseEntity<List<User>> findUsersWithSortingDesc(@RequestParam("sortDescending") String parameterToSortBy) {
+    public ResponseEntity<List<User>> findUsersWithSortingDesc(@RequestParam("sortDescending") String parameterToSortBy) throws ApplicationException {
         return new ResponseEntity<>(usersService.findUsersWithSortingDescending(parameterToSortBy), HttpStatus.OK);
     }
 
-    @GetMapping("/pages")
-    public ResponseEntity<List<User>> findUsersWithPagination(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize) {
+    @GetMapping("/pages/{pageNumber}/{pageSize}")
+    public ResponseEntity<List<User>> findUsersWithPagination(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize) throws ApplicationException {
         return new ResponseEntity<>(usersService.findUsersWithPagination(offset, pageSize), HttpStatus.OK);
     }
 
-    @GetMapping("/pageAndSortAscending")
-    public ResponseEntity<List<User>> getAllUsersWithPaginationAndSortingAsc(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize, @RequestParam("parameterToSortBy") String parameterToSortBy) {
+    @GetMapping("/pageAndSortAscending/{pageNumber}/{pageSize}")
+    public ResponseEntity<List<User>> getAllUsersWithPaginationAndSortingAsc(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize, @RequestParam("parameterToSortBy") String parameterToSortBy) throws ApplicationException {
         return new ResponseEntity<>(usersService.findUsersWithPaginationAndSortingAscending(offset, pageSize, parameterToSortBy), HttpStatus.OK);
     }
-    @GetMapping("/pageAndSortDescending")
-    public ResponseEntity<List<User>> getAllUsersWithPaginationAndSortingDesc(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize, @RequestParam("parameterToSortBy") String parameterToSortBy) {
+    @GetMapping("/pageAndSortDescending/{pageNumber}/{pageSize}")
+    public ResponseEntity<List<User>> getAllUsersWithPaginationAndSortingDesc(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize, @RequestParam("parameterToSortBy") String parameterToSortBy) throws ApplicationException{
         return new ResponseEntity<>(usersService.findUsersWithPaginationAndSortingDescending(offset, pageSize, parameterToSortBy), HttpStatus.OK);
     }
 

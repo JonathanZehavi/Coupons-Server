@@ -89,12 +89,15 @@ public class UsersService {
 
     }
 
-    public Boolean isExistByUsername(String username) {
+    public Boolean isExistByUsername(String username) throws ApplicationException {
+        if (username == null) {
+            throw new ApplicationException(ErrorType.INVALID_EMAIL);
+        }
         return userRepository.isExistByUsername(username);
     }
 
     public void deleteUser(Long id) throws ApplicationException {
-        if (id == null || id <=0){
+        if (id == null || id <= 0) {
             throw new ApplicationException(ErrorType.ID_DOES_NOT_EXIST);
         }
         userRepository.deleteById(id);
@@ -108,32 +111,50 @@ public class UsersService {
         return UserDtoConverter.from(userEntity);
     }
 
-    public boolean existById(Long id) {
+    public boolean existById(Long id) throws ApplicationException {
+        if (id == null) {
+            throw new ApplicationException(ErrorType.INVALID_ID);
+        }
         return userRepository.existsById(id);
     }
 
-    public List<User> findUsersWithSortingAscending(String parameterToSortBy) {
+    public List<User> findUsersWithSortingAscending(String parameterToSortBy) throws ApplicationException {
         List<UserEntity> userEntityList = userRepository.findAll(Sort.by(Sort.Direction.ASC, parameterToSortBy));
+        if (userEntityList.isEmpty()) {
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return userEntityList.stream().map(UserDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<User> findUsersWithSortingDescending(String parameterToSortBy) {
+    public List<User> findUsersWithSortingDescending(String parameterToSortBy) throws ApplicationException {
         List<UserEntity> userEntityList = userRepository.findAll(Sort.by(Sort.Direction.DESC, parameterToSortBy));
+        if (userEntityList.isEmpty()) {
+            throw new ApplicationException(ErrorType.GENERAL_ERROR);
+        }
         return userEntityList.stream().map(UserDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<User> findUsersWithPagination(int offset, int pageSize) {
+    public List<User> findUsersWithPagination(int offset, int pageSize) throws ApplicationException {
         Page<UserEntity> usersPagination = userRepository.findAll(PageRequest.of(offset, pageSize));
+        if (usersPagination.isEmpty()) {
+            throw new ApplicationException(ErrorType.GENERAL_ERROR);
+        }
         return usersPagination.stream().map(UserDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<User> findUsersWithPaginationAndSortingAscending(int offset, int pageSize, String parameterToSortBy) {
+    public List<User> findUsersWithPaginationAndSortingAscending(int offset, int pageSize, String parameterToSortBy) throws ApplicationException {
         Page<UserEntity> userEntityPage = userRepository.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.ASC, parameterToSortBy)));
+        if (userEntityPage.isEmpty()) {
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return userEntityPage.stream().map(UserDtoConverter::from).collect(Collectors.toList());
     }
 
-    public List<User> findUsersWithPaginationAndSortingDescending(int offset, int pageSize, String parameterToSortBy) {
+    public List<User> findUsersWithPaginationAndSortingDescending(int offset, int pageSize, String parameterToSortBy) throws ApplicationException {
         Page<UserEntity> userEntityPage = userRepository.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.DESC, parameterToSortBy)));
+        if (userEntityPage.isEmpty()){
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
         return userEntityPage.stream().map(UserDtoConverter::from).collect(Collectors.toList());
     }
 

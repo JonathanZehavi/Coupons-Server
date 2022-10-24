@@ -13,7 +13,7 @@ public class CouponValidations  {
         if (coupon.getStartDate() == null || coupon.getEndDate() == null) {
             throw new ApplicationException(ErrorType.INVALID_DATES);
         }
-        if (coupon.getAmount() == 0) {
+        if (coupon.getAmount() < 0) {
             throw new ApplicationException(ErrorType.INVALID_AMOUNT);
         }
         if (coupon.getPrice() == 0) {
