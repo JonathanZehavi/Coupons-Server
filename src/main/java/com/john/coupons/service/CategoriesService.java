@@ -31,9 +31,6 @@ public class CategoriesService {
         if (category.getName() == null){
             throw new ApplicationException(ErrorType.INVALID_NAME);
         }
-        if (isCategoryExistByName(category.getName())){
-            throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS);
-        }
         CategoryEntity categoryEntity = CategoryEntityConverter.from(category);
         categoryEntity = categoriesRepository.save(categoryEntity);
         return CategoryDtoConverter.from(categoryEntity);
@@ -49,9 +46,6 @@ public class CategoriesService {
         if (name == null){
             throw new ApplicationException(ErrorType.INVALID_NAME);
         }
-        if (isCategoryExistByName(name)){
-            throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS);
-        }
         CategoryEntity categoryEntity = categoriesRepository.findByName(name);
         return CategoryDtoConverter.from(categoryEntity);
     }
@@ -59,9 +53,6 @@ public class CategoriesService {
     public Category updateCategory(Long id, Category category) throws ApplicationException  {
         if (category.getName() == null){
             throw new ApplicationException(ErrorType.INVALID_NAME);
-        }
-        if (isCategoryExistByName(category.getName())){
-            throw new ApplicationException(ErrorType.NAME_ALREADY_EXISTS);
         }
         CategoryEntity categoryEntity = CategoryEntityConverter.from(category);
         categoryEntity.setId(id);
