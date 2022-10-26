@@ -49,7 +49,7 @@ public class CompaniesController {
 
     @GetMapping("/isCompanyExist/{id}")
     public ResponseEntity<Boolean> isCompanyExist(@PathVariable("id") Long id) throws ApplicationException {
-        return new ResponseEntity<>(companiesService.existById(id), HttpStatus.OK);
+        return new ResponseEntity<>(companiesService.isExistById(id), HttpStatus.OK);
     }
 
     @GetMapping("/isCompanyNameExist")

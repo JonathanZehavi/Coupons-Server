@@ -38,16 +38,13 @@ public class DeleteExpiredCouponsTimerTask extends TimerTask {
     @Override
     public void run() {
         System.out.println("Running to check if there is expired coupons to delete");
-        try {
             List<Coupon> couponList = couponsService.getAllExpiredCoupons();
             for (Coupon coupon: couponList) {
                 couponsService.deleteCoupon(coupon.getId());
             }
 
-        } catch (ApplicationException e) {
-            throw new ApplicationException(ErrorType.GENERAL_ERROR);
         }
     }
-}
+
 
 

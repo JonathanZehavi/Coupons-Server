@@ -68,7 +68,7 @@ public class CompaniesService {
         return companyEntityList.stream().map(CompanyDtoConverter::from).collect(Collectors.toList());
     }
 
-    public boolean existById(Long id) throws ApplicationException{
+    public boolean isExistById(Long id) throws ApplicationException{
         if (id == null || id<=0){
             throw new ApplicationException(ErrorType.INVALID_ID);
         }
