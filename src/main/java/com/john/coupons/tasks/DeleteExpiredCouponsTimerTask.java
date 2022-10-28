@@ -23,7 +23,6 @@ public class DeleteExpiredCouponsTimerTask extends TimerTask {
         this.couponsService = couponsService;
     }
 
-
     @SneakyThrows
     @Override
     @PostConstruct
