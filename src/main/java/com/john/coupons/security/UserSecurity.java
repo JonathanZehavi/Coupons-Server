@@ -1,6 +1,7 @@
 package com.john.coupons.security;
 
 import com.john.coupons.entities.UserEntity;
+import com.john.coupons.enums.Role;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,8 +20,9 @@ public class UserSecurity implements UserDetails {
     private static final long serialVersionUID = -6690946490872875352L;
     private Long id;
     private String username;
+    private Role role;
     transient private String password;
-    private final UserEntity user;
+    private final UserEntity userEntity;
     private Set<GrantedAuthority> authorities;
 
 
@@ -38,6 +40,7 @@ public class UserSecurity implements UserDetails {
     public String getUsername() {
         return username;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

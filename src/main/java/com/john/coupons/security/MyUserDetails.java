@@ -1,7 +1,9 @@
 package com.john.coupons.security;
 
+import com.john.coupons.converters.UserEntityConverter;
+import com.john.coupons.dto.User;
 import com.john.coupons.entities.UserEntity;
-import com.john.coupons.repositories.UserRepository;
+import com.john.coupons.service.UsersService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,22 +20,25 @@ import java.util.Set;
 public class MyUserDetails implements UserDetailsService {
 
     @Autowired
-    private final UserRepository userRepository; // USERSERVICE
+    private final UsersService usersService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            UserEntity userEntity = userRepository.findByUsername(username);
+
+            User user = usersService.findByUsername(username);
+            UserEntity userEntity = UserEntityConverter.from(user);
 
             Set<GrantedAuthority> authorities = new HashSet<>();
-            GrantedAuthority role = SecurityUtils.convertToAuthority(userEntity.getRole().name());
+            GrantedAuthority role = SecurityUtils.convertToAuthority(user.getRole().name());
             authorities.add(role);
 
             return UserSecurity.builder()
-                    .user(userEntity)
-                    .id(userEntity.getId())
+                    .userEntity(userEntity)
+                    .id(user.getId())
                     .username(userEntity.getUsername())
                     .password(userEntity.getPassword())
+                    .role(userEntity.getRole())
                     .authorities(authorities)
                     .build();
         } catch (Exception e){

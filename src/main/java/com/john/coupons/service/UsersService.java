@@ -51,7 +51,8 @@ public class UsersService {
         );
         UserSecurity userSecurity = (UserSecurity) authentication.getPrincipal();
         String jwt = jwtUtils.generateToken(userSecurity);
-        UserEntity userEntity = userSecurity.getUser();
+        UserEntity userEntity = userSecurity.getUserEntity();
+        userEntity.setId(userSecurity.getId());
         userEntity.setToken(jwt);
         return UserDtoConverter.from(userEntity);
     }

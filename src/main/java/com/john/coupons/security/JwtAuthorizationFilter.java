@@ -1,5 +1,6 @@
 package com.john.coupons.security;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,14 +18,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private JWTUtils jwtProvider;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain) throws ServletException, IOException {
 
         Authentication authentication = jwtProvider.getAuthentication(request);
 
         if (authentication != null && jwtProvider.isTokenValid(request)) {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
         }
 
         filterChain.doFilter(request, response);

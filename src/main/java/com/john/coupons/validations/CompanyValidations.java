@@ -19,9 +19,6 @@ public class CompanyValidations {
 
     public void validateCompany(Company company) throws ApplicationException {
 
-        if (companiesService.isCompanyNameExist(company.getCompanyName())) {
-            throw new ApplicationException(ErrorType.GENERAL_ERROR);
-        }
         if (company.getCompanyName() == null) {
             throw new ApplicationException(ErrorType.GENERAL_ERROR);
         }
