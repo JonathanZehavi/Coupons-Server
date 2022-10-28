@@ -1,5 +1,6 @@
 package com.john.coupons.security;
 
+import com.john.coupons.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -56,7 +57,7 @@ public class JWTUtils {
             return null;
         }
         String username = claims.getSubject();
-        Long userId = claims.get("userId", Long.class);
+        Long userId = claims.get("id", Long.class);
 
         Set<GrantedAuthority> authorities = Arrays.stream(claims.get("roles").toString().split(","))
                 .map(SecurityUtils::convertToAuthority)
@@ -83,15 +84,10 @@ public class JWTUtils {
             return false;
         }
 
-        if (claims.getExpiration().before(new Date())) {
-            return false;
-        }
-
-        return true;
+        return !claims.getExpiration().before(new Date());
     }
 
     private Claims extractClaims(HttpServletRequest request) {
-
         String token = SecurityUtils.extractAuthTokenFromRequest(request);
 
         if (token == null) {

@@ -49,13 +49,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/coupons").hasAnyRole("Admin", "Company")
                 .antMatchers(HttpMethod.PUT, "/purchases").hasRole("Admin")
                 .antMatchers(HttpMethod.GET, "/coupons").permitAll()
+                .antMatchers(HttpMethod.GET, "/coupons/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/users").hasRole("Admin")
                 .antMatchers(HttpMethod.GET, "/users/id").permitAll()
                 .antMatchers(HttpMethod.GET, "/purchases").hasRole("Admin")
                 .antMatchers(HttpMethod.GET, "/purchases/id").permitAll()
                 .antMatchers(HttpMethod.GET, "/customers").hasAnyRole("Admin", "Company")
                 .antMatchers(HttpMethod.GET, "/customers/id").permitAll()
-                .antMatchers(HttpMethod.GET, "/companies").hasAnyRole("Admin")
+                .antMatchers(HttpMethod.GET, "/companies").hasRole("Admin")
+                .antMatchers(HttpMethod.GET, "/companies/**").hasAnyRole("Admin", "Company")
                 .antMatchers(HttpMethod.GET, "/companies/id").hasAnyRole("Admin", "Company")
                 .antMatchers(HttpMethod.DELETE, "/users").hasRole("Admin")
                 .antMatchers(HttpMethod.DELETE, "/purchases").hasRole("Admin")
@@ -84,6 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public WebMvcConfigurer corsConfiguration() {
         return new WebMvcConfigurer() {
+
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**").allowedOrigins("*").allowedMethods("*");

@@ -33,6 +33,9 @@ public class CompaniesService {
 
     public Company createCompany(Company company) throws ApplicationException {
         companyValidations.validateCompany(company);
+        if (isCompanyNameExist(company.getCompanyName())) {
+            throw new ApplicationException(ErrorType.GENERAL_ERROR);
+        }
         CompanyEntity companyEntity = CompanyEntityConverter.from(company);
         companyEntity = companiesRepository.save(companyEntity);
         return CompanyDtoConverter.from(companyEntity);
@@ -40,7 +43,7 @@ public class CompaniesService {
 
     public Company updateCompany(Long id, Company company) throws ApplicationException {
         companyValidations.validateCompany(company);
-        company = getCompany(id);
+        company.setId(id);
         CompanyEntity companyEntity = CompanyEntityConverter.from(company);
         companyEntity = companiesRepository.save(companyEntity);
         return CompanyDtoConverter.from(companyEntity);

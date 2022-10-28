@@ -66,7 +66,7 @@ public class PurchasesService {
     public Purchase updatePurchase(Long id, Purchase purchase) throws ApplicationException {
         purchaseValidations.validatePurchase(purchase);
         Customer customer = customersService.getCustomerById(purchase.getId());
-        purchase = getPurchaseById(id);
+        purchase.setId(id);
         PurchaseEntity purchaseEntity = PurchaseEntityConverter.from(purchase);
         purchasesRepository.save(purchaseEntity);
         purchaseEntity.setCustomer(CustomerEntityConverter.from(customer));

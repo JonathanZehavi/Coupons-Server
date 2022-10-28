@@ -24,8 +24,8 @@ public class UsersController {
     }
 
     @PostMapping("/login")
-    public User login(@RequestBody UserLoginDetails userLoginDetails) throws ApplicationException {
-        return usersService.login(userLoginDetails);
+    public ResponseEntity<?> login(@RequestBody UserLoginDetails userLoginDetails) throws ApplicationException {
+        return new ResponseEntity<>(usersService.login(userLoginDetails), HttpStatus.OK);
     }
 
     @PostMapping
