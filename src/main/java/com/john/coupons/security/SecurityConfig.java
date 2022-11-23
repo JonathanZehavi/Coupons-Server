@@ -31,8 +31,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(myUserDetails).passwordEncoder(passwordEncoder());
     }
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception { // ! permit specific paths
+
         http.cors();
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -41,9 +43,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .antMatchers(HttpMethod.POST, "/coupons").hasAnyRole("Admin", "Company")
                 .antMatchers(HttpMethod.POST, "/purchases").permitAll()
-                .antMatchers(HttpMethod.POST,"/companies").hasRole("Admin")
+                .antMatchers(HttpMethod.POST, "/companies").hasRole("Admin")
                 .antMatchers(HttpMethod.POST, "/customers").permitAll()
                 .antMatchers(HttpMethod.PUT, "/users").permitAll()
+                .antMatchers(HttpMethod.PUT, "/users/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/customers").permitAll()
                 .antMatchers(HttpMethod.PUT, "/companies").hasAnyRole("Admin", "Company")
                 .antMatchers(HttpMethod.PUT, "/coupons").hasAnyRole("Admin", "Company")
@@ -52,18 +55,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/coupons/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/users").hasRole("Admin")
                 .antMatchers(HttpMethod.GET, "/users/id").permitAll()
-                .antMatchers(HttpMethod.GET, "/purchases").hasRole("Admin")
-                .antMatchers(HttpMethod.GET, "/purchases/id").permitAll()
+                .antMatchers(HttpMethod.GET, "/purchases/pagesOfPurchaseDetails/ByCustomerId/{id}/{pageNumber}/{pageSize}").permitAll()
+                .antMatchers(HttpMethod.GET, "/purchases/ByCustomerId/{id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/purchases//ByCouponId/{id}").hasAnyRole("Admin", "Company")
+                .antMatchers(HttpMethod.GET, "/purchases/").hasRole("Admin")
                 .antMatchers(HttpMethod.GET, "/customers").hasAnyRole("Admin", "Company")
                 .antMatchers(HttpMethod.GET, "/customers/id").permitAll()
                 .antMatchers(HttpMethod.GET, "/companies").hasRole("Admin")
                 .antMatchers(HttpMethod.GET, "/companies/**").hasAnyRole("Admin", "Company")
-                .antMatchers(HttpMethod.GET, "/companies/id").hasAnyRole("Admin", "Company")
+                .antMatchers(HttpMethod.GET, "/companies/{id}").hasAnyRole("Admin", "Company")
                 .antMatchers(HttpMethod.DELETE, "/users").hasRole("Admin")
                 .antMatchers(HttpMethod.DELETE, "/purchases").hasRole("Admin")
                 .antMatchers(HttpMethod.DELETE, "/coupons").hasAnyRole("Admin", "Company")
                 .antMatchers(HttpMethod.DELETE, "/companies").hasAnyRole("Admin")
                 .antMatchers(HttpMethod.DELETE, "/customers").hasAnyRole("Admin");
+
         http.addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 

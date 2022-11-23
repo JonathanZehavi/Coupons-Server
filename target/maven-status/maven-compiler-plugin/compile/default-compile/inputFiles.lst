@@ -1,4 +1,4 @@
-C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\enums\Category.java
+C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\entities\CategoryEntity.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\service\CompaniesService.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\controllers\PurchasesController.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\repositories\CustomersRepository.java
@@ -13,8 +13,11 @@ C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\joh
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\repositories\CompaniesRepository.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\service\CouponsService.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\controllers\UsersController.java
+C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\controllers\CategoriesController.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\converters\PurchaseDtoConverter.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\dto\UserLoginDetails.java
+C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\converters\CategoryDtoConverter.java
+C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\dto\Category.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\Main.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\security\SecurityUtils.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\tasks\DeleteExpiredCouponsTimerTask.java
@@ -35,11 +38,14 @@ C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\joh
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\enums\Role.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\dto\Customer.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\entities\PurchaseEntity.java
+C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\converters\CategoryEntityConverter.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\entities\UserEntity.java
+C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\repositories\CategoriesRepository.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\repositories\PurchasesRepository.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\security\UserSecurity.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\converters\CustomerDtoConverter.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\converters\UserDtoConverter.java
+C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\service\CategoriesService.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\exceptions\ApplicationException.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\entities\CouponEntity.java
 C:\Users\יהונתן זהבי\IdeaProjects\CouponPhaseTwo\src\main\java\com\john\coupons\service\CustomersService.java

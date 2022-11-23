@@ -38,7 +38,6 @@ public class MyUserDetails implements UserDetailsService {
                     .id(user.getId())
                     .username(userEntity.getUsername())
                     .password(userEntity.getPassword())
-                    .role(userEntity.getRole())
                     .authorities(authorities)
                     .build();
         } catch (Exception e){

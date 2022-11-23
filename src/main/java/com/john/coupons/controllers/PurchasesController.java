@@ -48,6 +48,11 @@ public class PurchasesController {
         return new ResponseEntity<>(purchasesService.getPurchasesByCustomerId(customerId), HttpStatus.OK);
     }
 
+    @GetMapping("/ByCouponId/{id}")
+    public ResponseEntity<Integer> getPurchasesByCouponId(@PathVariable("id") Long couponId) throws ApplicationException {
+        return new ResponseEntity<>(purchasesService.amountOfPurchasesByCouponId(couponId), HttpStatus.OK);
+    }
+
 
     @GetMapping("/getAllPurchasesDetails")
     public ResponseEntity<List<PurchaseDetails>> getPurchasesDetails() throws ApplicationException {
@@ -82,6 +87,16 @@ public class PurchasesController {
     @GetMapping("/pages/{pageNumber}/{pageSize}")
     public ResponseEntity<List<Purchase>> findPurchasesWithPagination(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize) throws ApplicationException {
         return new ResponseEntity<>(purchasesService.findPurchasesWithPagination(offset, pageSize), HttpStatus.OK);
+    }
+
+    @GetMapping("/pagesOfPurchaseDetails/ByCustomerId/{id}/{pageNumber}/{pageSize}")
+    public ResponseEntity<List<PurchaseDetails>> getPurchasesByCustomerId(@PathVariable("id") Long customerId, @PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize) throws ApplicationException {
+        return new ResponseEntity<>(purchasesService.findPurchasesDetailsByCustomerIdWithPagination(customerId, offset, pageSize), HttpStatus.OK);
+    }
+
+    @GetMapping("/pagesOfPurchaseDetails/{pageNumber}/{pageSize}")
+    public ResponseEntity<List<PurchaseDetails>> findPurchasesDetailsWithPagination(@PathVariable("pageNumber") int offset, @PathVariable("pageSize") int pageSize) throws ApplicationException {
+        return new ResponseEntity<>(purchasesService.findPurchasesDetailsWithPagination(offset, pageSize), HttpStatus.OK);
     }
 
     @GetMapping("/pageAndSortAscending{pageNumber}/{pageSize}")

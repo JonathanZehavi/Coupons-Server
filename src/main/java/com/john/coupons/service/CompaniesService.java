@@ -78,6 +78,13 @@ public class CompaniesService {
         return companiesRepository.existsById(id);
     }
 
+    public boolean isPhoneNumberExist(String phoneNumber) throws ApplicationException {
+        if (phoneNumber == null){
+            throw new ApplicationException(ErrorType.INVALID_PHONE_NUMBER);
+        }
+        return companiesRepository.existsByPhoneNumber(phoneNumber);
+    }
+
     public boolean isCompanyNameExist(String companyName) throws ApplicationException {
         if (companyName == null) {
             throw new ApplicationException(ErrorType.INVALID_NAME);

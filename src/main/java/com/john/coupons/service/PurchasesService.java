@@ -14,9 +14,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -94,6 +96,13 @@ public class PurchasesService {
         return purchaseEntities.stream().map(PurchaseDetailsConverter::from).collect(Collectors.toList());
     }
 
+    public Integer amountOfPurchasesByCouponId(Long couponId) throws ApplicationException {
+        if (couponId == null){
+            throw new ApplicationException(ErrorType.INVALID_ID);
+        }
+        return purchasesRepository.amountOfPurchasesByCouponId(couponId);
+    }
+
 
     public List<PurchaseDetails> getPurchasesDetails() throws ApplicationException {
         List<PurchaseEntity> purchaseEntities = purchasesRepository.findAll();
@@ -125,9 +134,24 @@ public class PurchasesService {
         return purchasesRepository.existsById(id);
     }
 
+    public List<PurchaseDetails> findPurchasesDetailsByCustomerIdWithPagination(Long customerId, int offset, int pageSize) throws ApplicationException {
+        Page<PurchaseEntity> purchasePagination = purchasesRepository.findAll(PageRequest.of(offset, pageSize));
+        if (purchasePagination.isEmpty()) {
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
+        List<PurchaseDetails> purchaseDetailsList = purchasePagination.map(PurchaseDetailsConverter::from).stream().collect(Collectors.toList());
+        List<PurchaseDetails> purchaseDetailsByCustomerId = new ArrayList<>();
+        for (PurchaseDetails purchase: purchaseDetailsList) {
+            if (Objects.equals(purchase.getUserId(), customerId)){
+                purchaseDetailsByCustomerId.add(purchase);
+            }
+        }
+        return purchaseDetailsByCustomerId;
+    }
+
     public List<Purchase> findPurchasesWithSortingAscending(String parameterToSortBy) throws ApplicationException {
         List<PurchaseEntity> purchaseEntities = purchasesRepository.findAll(Sort.by(Sort.Direction.ASC, parameterToSortBy));
-        if (purchaseEntities.isEmpty()){
+        if (purchaseEntities.isEmpty()) {
             throw new ApplicationException(ErrorType.EMPTY_LIST);
         }
         return purchaseEntities.stream().map(PurchaseDtoConverter::from).collect(Collectors.toList());
@@ -135,7 +159,7 @@ public class PurchasesService {
 
     public List<Purchase> findPurchasesWithSortingDescending(String parameterToSortBy) throws ApplicationException {
         List<PurchaseEntity> purchaseEntities = purchasesRepository.findAll(Sort.by(Sort.Direction.DESC, parameterToSortBy));
-        if (purchaseEntities.isEmpty()){
+        if (purchaseEntities.isEmpty()) {
             throw new ApplicationException(ErrorType.EMPTY_LIST);
         }
         return purchaseEntities.stream().map(PurchaseDtoConverter::from).collect(Collectors.toList());
@@ -144,15 +168,23 @@ public class PurchasesService {
 
     public List<Purchase> findPurchasesWithPagination(int offset, int pageSize) throws ApplicationException {
         Page<PurchaseEntity> purchasePagination = purchasesRepository.findAll(PageRequest.of(offset, pageSize));
-        if (purchasePagination.isEmpty()){
+        if (purchasePagination.isEmpty()) {
             throw new ApplicationException(ErrorType.EMPTY_LIST);
         }
         return purchasePagination.map(PurchaseDtoConverter::from).stream().collect(Collectors.toList());
     }
 
+    public List<PurchaseDetails> findPurchasesDetailsWithPagination(int offset, int pageSize) throws ApplicationException {
+        Page<PurchaseEntity> purchasePagination = purchasesRepository.findAll(PageRequest.of(offset, pageSize));
+        if (purchasePagination.isEmpty()) {
+            throw new ApplicationException(ErrorType.EMPTY_LIST);
+        }
+        return purchasePagination.map(PurchaseDetailsConverter::from).stream().collect(Collectors.toList());
+    }
+
     public List<Purchase> findPurchasesWithPaginationAndSortingAscending(int offset, int pageSize, String parameterToSortBy) throws ApplicationException {
         Page<PurchaseEntity> purchases = purchasesRepository.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.ASC, parameterToSortBy)));
-        if (purchases.isEmpty()){
+        if (purchases.isEmpty()) {
             throw new ApplicationException(ErrorType.EMPTY_LIST);
         }
         return purchases.stream().map(PurchaseDtoConverter::from).collect(Collectors.toList());
@@ -160,7 +192,7 @@ public class PurchasesService {
 
     public List<Purchase> findPurchasesWithPaginationAndSortingDescending(int offset, int pageSize, String parameterToSortBy) throws ApplicationException {
         Page<PurchaseEntity> purchases = purchasesRepository.findAll(PageRequest.of(offset, pageSize, Sort.by(Sort.Direction.DESC, parameterToSortBy)));
-        if (purchases.isEmpty()){
+        if (purchases.isEmpty()) {
             throw new ApplicationException(ErrorType.EMPTY_LIST);
         }
         return purchases.stream().map(PurchaseDtoConverter::from).collect(Collectors.toList());

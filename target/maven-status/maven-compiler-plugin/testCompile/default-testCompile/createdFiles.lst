@@ -1,1 +1,5 @@
+com\john\coupons\controllers\CouponsControllerTest.class
+com\john\coupons\controllers\PurchasesControllerTest.class
+com\john\coupons\controllers\CompaniesControllerTest.class
+com\john\coupons\controllers\CustomersControllerTest.class
 com\john\coupons\controllers\UsersControllerTest.class

@@ -57,6 +57,11 @@ public class CompaniesController {
         return new ResponseEntity<>(companiesService.isCompanyNameExist(companyName), HttpStatus.OK);
     }
 
+    @GetMapping("/isPhoneNumberExist")
+    public ResponseEntity<Boolean> isPhoneNumberExist(@RequestParam("phoneNumber") String phoneNumber) throws ApplicationException {
+        return new ResponseEntity<>(companiesService.isPhoneNumberExist(phoneNumber), HttpStatus.OK);
+    }
+
     @GetMapping("/parameterToSortByAscending")
     public ResponseEntity<List<Company>> findCompaniesWithSortingAsc(@RequestParam("sortAscending") String parameterToSortBy) throws ApplicationException {
         return new ResponseEntity<>(companiesService.findCompaniesWithSortingAscending(parameterToSortBy), HttpStatus.OK);
