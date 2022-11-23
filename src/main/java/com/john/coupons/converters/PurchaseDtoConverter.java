@@ -1,8 +1,16 @@
 package com.john.coupons.converters;
 
 import com.john.coupons.dto.Purchase;
+import com.john.coupons.dto.PurchaseDetails;
 import com.john.coupons.entities.PurchaseEntity;
+import com.john.coupons.enums.ErrorType;
+import com.john.coupons.exceptions.ApplicationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PurchaseDtoConverter {
@@ -19,5 +27,6 @@ public class PurchaseDtoConverter {
                 .map(CouponDtoConverter::from).collect(Collectors.toList()));
         return purchase;
     }
+
 
 }

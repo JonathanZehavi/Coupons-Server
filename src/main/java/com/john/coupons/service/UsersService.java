@@ -18,10 +18,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,14 +35,16 @@ public class UsersService {
     private final AuthenticationManager authenticationManager;
     private final JWTUtils jwtUtils;
     private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UsersService(UserRepository userRepository, UserValidations userValidations, AuthenticationManager authenticationManager, JWTUtils jwtUtils, PasswordEncoder passwordEncoder) {
+    public UsersService(UserRepository userRepository, UserValidations userValidations, AuthenticationManager authenticationManager, JWTUtils jwtUtils, PasswordEncoder passwordEncoder, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.userValidations = userValidations;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
         this.passwordEncoder = passwordEncoder;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public User login(UserLoginDetails userLoginDetails) throws ApplicationException {
@@ -56,6 +61,8 @@ public class UsersService {
         userEntity.setToken(jwt);
         return UserDtoConverter.from(userEntity);
     }
+
+
 
     public User createUser(User user) throws ApplicationException {
         userValidations.validateUser(user);

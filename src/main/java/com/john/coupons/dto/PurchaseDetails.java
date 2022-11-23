@@ -13,11 +13,13 @@ import java.util.List;
 public class PurchaseDetails {
 
     private Long id;
+    private Long userId;
     private String firstname;
     private String lastname;
     private String username;
     private String address;
     private String phoneNumber;
+    private float priceInTotal;
     private int amount;
     private LocalDateTime dateOfPurchase;
     private List<Coupon> coupons;

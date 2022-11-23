@@ -2,10 +2,8 @@ package com.john.coupons.converters;
 
 import com.john.coupons.dto.Customer;
 import com.john.coupons.entities.CustomerEntity;
-import lombok.Data;
 
-
-    public class CustomerDtoConverter {
+public class CustomerDtoConverter {
 
     public static Customer from(CustomerEntity customerEntity) {
         Customer customer = new Customer();

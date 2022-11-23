@@ -6,6 +6,7 @@ com\john\coupons\entities\UserEntity.class
 com\john\coupons\controllers\CouponsController.class
 com\john\coupons\enums\Role.class
 com\john\coupons\repositories\PurchasesRepository.class
+com\john\coupons\entities\CategoryEntity.class
 com\john\coupons\dto\Customer.class
 com\john\coupons\exceptions\MyExceptionHandler.class
 com\john\coupons\repositories\UserRepository.class
@@ -18,7 +19,6 @@ com\john\coupons\service\UsersService.class
 com\john\coupons\validations\CompanyValidations.class
 com\john\coupons\converters\CustomerEntityConverter.class
 com\john\coupons\Main.class
-com\john\coupons\enums\Category.class
 com\john\coupons\security\SecurityConfig$1.class
 com\john\coupons\enums\ErrorType.class
 com\john\coupons\converters\CouponDtoConverter.class
@@ -29,12 +29,14 @@ com\john\coupons\validations\CustomerValidations.class
 com\john\coupons\exceptions\ApplicationException.class
 com\john\coupons\repositories\CouponsRepository.class
 com\john\coupons\security\MyUserDetails.class
+com\john\coupons\converters\CategoryDtoConverter.class
 com\john\coupons\security\UserSecurity$UserSecurityBuilder.class
 com\john\coupons\converters\CouponEntityConverter.class
 com\john\coupons\repositories\CustomersRepository.class
 com\john\coupons\controllers\CompaniesController.class
 com\john\coupons\exceptions\ErrorResponse.class
 com\john\coupons\entities\PurchaseEntity.class
+com\john\coupons\service\CategoriesService.class
 com\john\coupons\controllers\UsersController.class
 com\john\coupons\controllers\PurchasesController.class
 com\john\coupons\service\PurchasesService.class
@@ -42,6 +44,7 @@ com\john\coupons\converters\UserDtoConverter.class
 com\john\coupons\entities\CustomerEntity.class
 com\john\coupons\converters\CompanyDtoConverter.class
 com\john\coupons\converters\PurchaseDtoConverter.class
+com\john\coupons\dto\Category.class
 com\john\coupons\dto\User.class
 com\john\coupons\dto\Purchase.class
 com\john\coupons\entities\CouponEntity.class
@@ -51,10 +54,13 @@ com\john\coupons\service\CustomersService.class
 com\john\coupons\service\CompaniesService.class
 com\john\coupons\security\JWTUtils.class
 com\john\coupons\service\CouponsService.class
+com\john\coupons\repositories\CategoriesRepository.class
+com\john\coupons\controllers\CategoriesController.class
 com\john\coupons\repositories\CompaniesRepository.class
 com\john\coupons\security\SecurityConfig.class
 com\john\coupons\security\SecurityUtils.class
 com\john\coupons\validations\PurchaseValidations.class
+com\john\coupons\converters\CategoryEntityConverter.class
 com\john\coupons\converters\CustomerDtoConverter.class
 com\john\coupons\validations\CouponValidations.class
 com\john\coupons\validations\UserValidations.class

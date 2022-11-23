@@ -29,10 +29,10 @@ public class UserEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "firstname", nullable = false)
     private String firstname;
 
-    @Column(name = "last_name", nullable = false)
+    @Column(name = "lastname", nullable = false)
     private String lastname;
 
     @Column(name = "company_id")

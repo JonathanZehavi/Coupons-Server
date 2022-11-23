@@ -9,6 +9,7 @@ import com.john.coupons.enums.Role;
 import com.john.coupons.exceptions.ApplicationException;
 import com.john.coupons.repositories.CustomersRepository;
 import com.john.coupons.validations.CustomerValidations;
+import com.john.coupons.validations.UserValidations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,18 +26,21 @@ public class CustomersService {
 
     private final CustomersRepository customersRepository;
     private final CustomerValidations customerValidations;
+    private final UserValidations userValidations;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public CustomersService(CustomersRepository customersRepository, CustomerValidations customerValidations, PasswordEncoder passwordEncoder) {
+    public CustomersService(CustomersRepository customersRepository, CustomerValidations customerValidations, UserValidations userValidations, PasswordEncoder passwordEncoder) {
         this.customersRepository = customersRepository;
         this.customerValidations = customerValidations;
+        this.userValidations = userValidations;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
     public Customer createCustomer(Customer customer) throws ApplicationException {
         customerValidations.validateCustomer(customer);
+        userValidations.validateUser(customer.getUser());
         CustomerEntity customerEntity = CustomerEntityConverter.from(customer);
         customerEntity.getUser().setPassword(passwordEncoder.encode(customer.getUser().getPassword()));
         customerEntity.getUser().setRole(Role.Customer);
@@ -47,6 +51,7 @@ public class CustomersService {
     @Transactional
     public Customer updateCustomer(Long id, Customer customer) throws ApplicationException {
         customerValidations.validateCustomer(customer);
+        userValidations.validateUser(customer.getUser());
         CustomerEntity customerEntity = CustomerEntityConverter.from(customer);
         customerEntity.setId(id);
         customerEntity.getUser().setId(id);

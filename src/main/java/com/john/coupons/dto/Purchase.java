@@ -19,6 +19,7 @@ public class Purchase {
     private Long customerId;
     private float totalPrice;
     private List<Coupon> coupons;
+
 }
 
 
